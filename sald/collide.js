@@ -61,8 +61,25 @@ function rectangleRectangle(r1, r2)
  *  false if p1 and p2 do not intersect
  *  true if p1 and p2 do intersect
  */
-function convexConvex(p1, p2) {
-	//TODO
+function convexConvex(p1, p2)
+{
+	//An implementation of what we discussed in class. Essentially just a cross product check.
+    var p1Length = p1.length;
+    var p2Length = p2.length;
+    
+    for (var i = 0; i < p1Length; i++)
+    {
+        for(var j = 0; j <p2Length; j ++)
+        {
+            var position = ( (p1[i + 1].x - p1[i].x) * (p2[j].y - p1[i].y) ) -  ( (p1[i + 1].y - p1[i].y) * (p2[j].x - p1[i].x) );
+            
+            if(position <= 0)
+            {
+                return true;
+            }
+        }
+    }
+    
 	return false;
 }
 
