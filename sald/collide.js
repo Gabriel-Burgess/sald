@@ -71,7 +71,7 @@ function convexConvex(p1, p2)
     {
         for(var j = 0; j <p2Length; j ++)
         {
-            var position = ( (p1[i + 1].x - p1[i].x) * (p2[j].y - p1[i].y) ) -  ( (p1[i + 1].y - p1[i].y) * (p2[j].x - p1[i].x) );
+            var position = ( (p1[i + 1].x - p1[i].x) * (p2[j].y - p1[i].y) ) - ( (p1[i + 1].y - p1[i].y) * (p2[j].x - p1[i].x) );
             
             if(position <= 0)
             {
@@ -150,8 +150,21 @@ function rayRectangle(r, b)
  *  {t:} if intersection
  *    -- NOTE: 0.0 <= t <= 1.0 gives the position of the first intersection
  */
-function rayConvex(r, p) {
-	//TODO
+function rayConvex(r, p)
+{
+    //Placeholder code until I can figure out how to find {t:}
+    var pLength = p.length;
+    
+    for(var i = 0; i < pLength; i++)
+    {
+        var position = ( (r.end.x - r.start.x) * (p[i].y - r.start.y) ) - ( (r.end.y - r.start.y) * (p[i].x - r.start.x) );
+        
+        if(position <= 0)
+        {
+            return true; //It should return {t:} instead.
+        }
+    }
+    
 	return null;
 }
 
