@@ -1,3 +1,5 @@
+//Implementation by Gabriel Burgess.
+
 /* Circle vs Circle
  * INPUT: two circles specified by position and radius:
  *  c1 = {x:, y:, r:}, c2 = {x:, y:, r:}
@@ -152,21 +154,57 @@ function rayRectangle(r, b)
  */
 function rayConvex(r, p)
 {
-    //Placeholder code until I can figure out how to find {t:}
+   /* First I determine if there's any intersection at all, then do a check to find t.
+    * Inspired in part by this article: http://geomalgorithms.com/a13-_intersect-4.html
+    * However, the approach they use requires too many operations in the worst case. So this is my attempt at shaving off some operations even though it may not look like it.
+    * I need more time to test this.
+    */
     var pLength = p.length;
     
     for(var i = 0; i < pLength; i++)
     {
         var position = ( (r.end.x - r.start.x) * (p[i].y - r.start.y) ) - ( (r.end.y - r.start.y) * (p[i].x - r.start.x) );
         
+        //Then an intersection has occured.
         if(position <= 0)
         {
-            return true; //It should return {t:} instead.
+            //If the point is the vertex between the last and first edge of the polygon.
+            var j = i;
+            if(j === 0)
+            {
+                j = pLength - 2;
+            }
+            
+            //Here's where I get a bit unconventional, because I'm going to check the value of t for two edges and then take the min.
+            //This was so I could avoid running the following code for each edge.
+            var nOne = {p1: p[j + 1], p2: {x: -p[j].x, y: -p[j].y}};
+            var tempOne = { x: r.start.x - p[j].x, y : r.start.y - p[j].y };
+            var tempTwo = { x: nOne.p2.x - nOne.p1.x, y: nOne.p2.y - nOne.p1.y };
+            var numeratorOne =  (tempOne.x * tempTwo.x) + (tempOne.y * tempTwo.y);
+            var denominatorOne = ((r.end.x - r.start.x) * tempTwo.x) + ((r.end.y - r.start.y) * tempTwo.y);
+            var tOne = numeratorOne / denominatorOne;
+            
+            //Will fill this out later.
+            var nTwo = {p1: p[j + 2], p2: {x: -p[j + 1].x, y: -p[j + 1].y}};
+            var numeratorTwo;
+            var denominatorTwo;
+            var tTwo = numeratorTwo / denominatorTwo;
+            
+            if(tOne < tTwo)
+            {
+                return {t: tOne};
+            }
+            else
+            {
+                return {t: tTwo};
+            }
         }
     }
     
 	return null;
 }
+
+
 
 
 module.exports = {
